@@ -1,2 +1,3 @@
 # candlelyzer.com
-Repository for the candlelyzer.com project.
+
+Repository for the [candlelyzer.com](https://candlelyzer.com) project.
