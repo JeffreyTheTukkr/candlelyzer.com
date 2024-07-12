@@ -1,0 +1,8 @@
+# defaults
+.DS_Store
+Thumbs.db
+.env
+
+# editors
+.idea/
+.vscode/
