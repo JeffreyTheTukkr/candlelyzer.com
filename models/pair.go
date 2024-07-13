@@ -34,7 +34,7 @@ type Pair struct {
 	CreatedAt time.Time    `json:"created_at"`
 }
 
-// PairFilters model to contain the model filters
+// PairFilters model filters
 type PairFilters struct {
 	Base     string       `json:"base"`
 	Quote    string       `json:"quote"`
