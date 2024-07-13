@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	_ "github.com/joho/godotenv/autoload"
+)
 
 // main bootstrap application
 func main() {
