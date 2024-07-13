@@ -8,8 +8,8 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-// CreatePsqlPool initializes a new postgresql pool
-func CreatePsqlPool() (*pgxpool.Pool, error) {
+// NewPsqlPool initializes a new postgresql pool
+func NewPsqlPool() (*pgxpool.Pool, error) {
 	connString := getConnectionString()
 
 	// create connection pool and connect to database

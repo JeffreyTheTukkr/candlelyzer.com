@@ -21,7 +21,7 @@ func NewApplication(db *pgxpool.Pool) *Application {
 // main bootstrap application
 func main() {
 	// create psql database instance
-	db, dbErr := databases.CreatePsqlPool()
+	db, dbErr := databases.NewPsqlPool()
 	if dbErr != nil {
 		panic(dbErr)
 	}
