@@ -14,7 +14,7 @@ timescaledb     >= v16.3
 
 ```
 run    : go run main.go
-test   : go test ./... [--verbose]
+test   : go test ./... [-v] [-cover]
 lint   : golangci-lint run ./... [--fix]
 ```
 
