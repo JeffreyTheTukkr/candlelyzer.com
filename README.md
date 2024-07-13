@@ -17,3 +17,21 @@ run    : go run main.go
 test   : go test ./... [--verbose]
 lint   : golangci-lint run ./... [--fix]
 ```
+
+## development
+
+Documentation regarding the (local) development of this project. 
+
+**Dotenv file**
+
+```
+# general
+APP_ENV=development
+
+# postgresql database
+PG_HOST=localhost
+PG_PORT=5432
+PG_USER=__USERNAME_
+PG_PASS=__PASSWORD__
+PG_NAME=candlelyzer
+```
