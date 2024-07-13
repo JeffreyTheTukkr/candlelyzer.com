@@ -31,6 +31,12 @@ func main() {
 		panic(dbErr)
 	}
 
+	// run psql database migrations
+	migratorErr := databases.RunPsqlMigrations(db)
+	if migratorErr != nil {
+		panic(migratorErr)
+	}
+
 	// create slog logger instance
 	logger := loggers.NewSlogLogger()
 
