@@ -27,6 +27,7 @@ Documentation regarding the (local) development of this project.
 ```
 # general
 APP_ENV=development
+LOG_LEVEL=debug
 
 # postgresql database
 PG_HOST=localhost
