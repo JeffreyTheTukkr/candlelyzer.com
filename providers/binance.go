@@ -19,7 +19,6 @@ func NewBinanceRepo(apiKey string, secretKey string) *Binance {
 	return &Binance{
 		Client: client,
 	}
-
 }
 
 // ListAllPairs return a list of all binance pairs
