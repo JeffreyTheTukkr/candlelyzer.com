@@ -17,8 +17,13 @@ type PairsImporter struct {
 }
 
 // NewPairsImporter constructor for new pairs importer
-func NewPairsImporter() *PairsImporter {
-	return &PairsImporter{}
+func NewPairsImporter(db *pgxpool.Pool, logger *slog.Logger, binanceApiKey string, binanceSecret string) *PairsImporter {
+	return &PairsImporter{
+		db:            db,
+		logger:        logger,
+		binanceApiKey: binanceApiKey,
+		binanceSecret: binanceSecret,
+	}
 }
 
 // RunPairsImport run the pair importer
