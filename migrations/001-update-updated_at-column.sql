@@ -3,7 +3,9 @@ CREATE OR REPLACE FUNCTION update_updated_at_column()
     RETURNS TRIGGER AS
 $$
 BEGIN
-    NEW.updated_at = CURRENT_TIMESTAMP;
+    IF ROW(NEW.*) IS DISTINCT FROM ROW(OLD.*) THEN
+        NEW.updated_at = CURRENT_TIMESTAMP;
+    END IF;
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
