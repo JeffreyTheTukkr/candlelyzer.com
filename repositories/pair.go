@@ -42,8 +42,8 @@ func (pr *PairRepo) FindById(id uuid.UUID) (models.Pair, error) {
 }
 
 // FindActivelyImporting find multiple pairs with importing status true
-func (pr *PairRepo) FindActivelyImporting() ([]models.Pair, error) {
-	rows, err := pr.db.Query(context.Background(), "SELECT * FROM pairs WHERE importing = true AND status = 'active';")
+func (pr *PairRepo) FindActivelyImporting(exchange models.ExchangeName) ([]models.Pair, error) {
+	rows, err := pr.db.Query(context.Background(), "SELECT * FROM pairs WHERE importing = true AND status = 'active' AND exchange = $1;", exchange)
 	if err != nil {
 		return nil, err
 	}
