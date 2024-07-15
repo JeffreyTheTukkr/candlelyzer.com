@@ -25,6 +25,9 @@ func NewApplication(db *pgxpool.Pool, logger *slog.Logger) *Application {
 
 // main bootstrap application
 func main() {
+	// create slog logger instance
+	logger := loggers.NewSlogLogger()
+
 	// create psql database instance
 	db, dbErr := databases.NewPsqlPool()
 	if dbErr != nil {
@@ -32,13 +35,10 @@ func main() {
 	}
 
 	// run psql database migrations
-	migratorErr := databases.RunPsqlMigrations(db)
+	migratorErr := databases.RunPsqlMigrations(db, logger)
 	if migratorErr != nil {
 		panic(migratorErr)
 	}
-
-	// create slog logger instance
-	logger := loggers.NewSlogLogger()
 
 	// create new application and start
 	app := NewApplication(db, logger)

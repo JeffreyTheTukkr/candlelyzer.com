@@ -3,6 +3,7 @@ package databases
 import (
 	"context"
 	"fmt"
+	"log/slog"
 	"os"
 	"path/filepath"
 	"slices"
@@ -13,7 +14,7 @@ import (
 )
 
 // RunPsqlMigrations run all database migrations
-func RunPsqlMigrations(db *pgxpool.Pool) error {
+func RunPsqlMigrations(db *pgxpool.Pool, logger *slog.Logger) error {
 	// retrieve all migration files
 	files, filesErr := os.ReadDir("migrations")
 	if filesErr != nil {
@@ -40,35 +41,38 @@ func RunPsqlMigrations(db *pgxpool.Pool) error {
 		name := file.Name()[:len(file.Name())-4][4:] // skip first (`001-`) and last (`.sql`) 4 characters
 
 		if keyErr != nil {
-			fmt.Printf("failed to parse migration file key: %v\n", keyErr)
+			logger.Error("failed to parse migration file key", "error", keyErr)
 			return keyErr
 		}
 
 		// skip migrations if it already exists in the migrations table
 		if slices.Contains(keys, keyInt) {
+			logger.Debug("skipping migration file due to duplicate key", "key", key, "name", name)
 			continue
 		}
 
 		// read file contents
 		content, contentErr := os.ReadFile(filepath.Join("migrations", file.Name()))
 		if contentErr != nil {
-			fmt.Printf("unable to read migration file: %v\n", contentErr)
+			logger.Error("unable to read migration file", "error", contentErr)
 			return contentErr
 		}
 
 		// execute file contents
 		_, execErr := db.Exec(context.Background(), string(content))
 		if execErr != nil {
-			fmt.Printf("unable to execute migration file: %v\n", execErr)
+			logger.Error("unable to execute migration file", "error", execErr)
 			return execErr
 		}
 
 		// insert migration into database
 		_, insertErr := db.Exec(context.Background(), "INSERT INTO migrations (name, key) VALUES ($1, $2);", name, key)
 		if insertErr != nil {
-			fmt.Printf("unable to insert migration file: %v\n", insertErr)
+			logger.Error("unable to insert migration file", "error", insertErr)
 			return insertErr
 		}
+
+		logger.Info("migration file inserted", "name", name, "key", key)
 	}
 
 	return nil
