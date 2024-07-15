@@ -10,7 +10,7 @@ import (
 
 // BinanceRepo required provider dependencies
 type BinanceRepo struct {
-	Client *binance.Client
+	client *binance.Client
 }
 
 // NewBinanceRepo constructor for new binance repository
@@ -18,13 +18,13 @@ func NewBinanceRepo(apiKey string, secretKey string) *BinanceRepo {
 	client := binance.NewClient(apiKey, secretKey)
 
 	return &BinanceRepo{
-		Client: client,
+		client: client,
 	}
 }
 
 // ListAllPairs return a list of all binance pairs
 func (br *BinanceRepo) ListAllPairs() ([]models.PairBase, error) {
-	exchange, err := br.Client.NewExchangeInfoService().Do(context.Background())
+	exchange, err := br.client.NewExchangeInfoService().Do(context.Background())
 
 	// map binance data to standardized pair
 	var pairs []models.PairBase
@@ -47,7 +47,7 @@ func (br *BinanceRepo) FetchCandleData(pair string, since time.Time) ([]*binance
 		since = time.Date(2010, 0, 0, 0, 0, 0, 0, time.UTC)
 	}
 
-	return br.Client.NewKlinesService().Symbol(pair).StartTime(since.UnixMilli()).Limit(1000).Interval("1m").Do(context.Background())
+	return br.client.NewKlinesService().Symbol(pair).StartTime(since.UnixMilli()).Limit(1000).Interval("1m").Do(context.Background())
 }
 
 // matchBinancePairStatus helper to match the pair status from binance to standard
