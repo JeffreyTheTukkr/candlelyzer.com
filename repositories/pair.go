@@ -41,6 +41,16 @@ func (pr *PairRepo) FindById(id uuid.UUID) (models.Pair, error) {
 	return pgx.CollectOneRow(rows, pgx.RowToStructByName[models.Pair])
 }
 
+// FindActivelyImporting find multiple pairs with importing status true
+func (pr *PairRepo) FindActivelyImporting() ([]models.Pair, error) {
+	rows, err := pr.db.Query(context.Background(), "SELECT * FROM pairs WHERE importing = true AND status = 'active';")
+	if err != nil {
+		return nil, err
+	}
+
+	return pgx.CollectRows(rows, pgx.RowToStructByName[models.Pair])
+}
+
 // UpsertOne update or insert a single pair model
 func (pr *PairRepo) UpsertOne(m models.PairBase) error {
 	_, err := pr.db.Exec(context.Background(), "INSERT INTO pairs (base, quote, exchange, status) VALUES ($1, $2, $3, $4) "+
