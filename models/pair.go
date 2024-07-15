@@ -27,7 +27,7 @@ const (
 	Delisted PairStatus = "delisted"   // removed from exchange
 )
 
-// Pair database model for pair structure
+// Pair database model
 type Pair struct {
 	Id        uuid.UUID    `json:"id"`
 	Base      string       `json:"base"`
@@ -38,7 +38,7 @@ type Pair struct {
 	CreatedAt time.Time    `json:"created_at"`
 }
 
-// PairBase simplified pair model for filters and inserts
+// PairBase simplified model without database attributes
 type PairBase struct {
 	Base     string       `json:"base"`
 	Quote    string       `json:"quote"`
