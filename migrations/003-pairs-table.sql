@@ -7,8 +7,8 @@ CREATE TYPE pair_status AS ENUM ('active', 'break', 'halt', 'end_of_day', 'delis
 -- create pairs table
 CREATE TABLE IF NOT EXISTS pairs (
     id         uuid PRIMARY KEY       DEFAULT uuid_generate_v4(),
-    base       VARCHAR(8)    NOT NULL,
-    quote      VARCHAR(8)    NOT NULL,
+    base       VARCHAR(24)    NOT NULL,
+    quote      VARCHAR(24)    NOT NULL,
     exchange   pair_exchange NOT NULL,
     status     pair_status   NOT NULL,
     updated_at TIMESTAMPTZ   NOT NULL DEFAULT CURRENT_TIMESTAMP,
