@@ -32,6 +32,7 @@ type Pair struct {
 	Id        uuid.UUID    `json:"id"`
 	Base      string       `json:"base"`
 	Quote     string       `json:"quote"`
+	Importing bool         `json:"importing"`
 	Exchange  ExchangeName `json:"exchange"`
 	Status    PairStatus   `json:"status"`
 	UpdatedAt time.Time    `json:"updated_at"`
@@ -40,8 +41,9 @@ type Pair struct {
 
 // PairBase simplified model without database attributes
 type PairBase struct {
-	Base     string       `json:"base"`
-	Quote    string       `json:"quote"`
-	Exchange ExchangeName `json:"exchange"`
-	Status   PairStatus   `json:"status"`
+	Base      string       `json:"base"`
+	Quote     string       `json:"quote"`
+	Importing bool         `json:"importing"`
+	Exchange  ExchangeName `json:"exchange"`
+	Status    PairStatus   `json:"status"`
 }
