@@ -1,6 +1,10 @@
 package models
 
-import "time"
+import (
+	"time"
+
+	"github.com/google/uuid"
+)
 
 // ExchangeName enum for the exchange type
 type ExchangeName string
@@ -25,7 +29,7 @@ const (
 
 // Pair database model for pair structure
 type Pair struct {
-	Id        uint32       `json:"id"`
+	Id        uuid.UUID    `json:"id"`
 	Base      string       `json:"base"`
 	Quote     string       `json:"quote"`
 	Exchange  ExchangeName `json:"exchange"`
