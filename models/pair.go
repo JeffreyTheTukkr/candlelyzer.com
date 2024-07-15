@@ -38,8 +38,8 @@ type Pair struct {
 	CreatedAt time.Time    `json:"created_at"`
 }
 
-// PairFilters model filters
-type PairFilters struct {
+// PairBase simplified pair model for filters and inserts
+type PairBase struct {
 	Base     string       `json:"base"`
 	Quote    string       `json:"quote"`
 	Exchange ExchangeName `json:"exchange"`
