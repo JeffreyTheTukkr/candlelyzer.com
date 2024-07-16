@@ -3,6 +3,7 @@ package main
 import (
 	"log/slog"
 
+	"github.com/JeffreyTheTukkr/candlelyzer.com/cron"
 	"github.com/JeffreyTheTukkr/candlelyzer.com/databases"
 	"github.com/JeffreyTheTukkr/candlelyzer.com/loggers"
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -48,4 +49,10 @@ func main() {
 // start run the application
 func (app *Application) start() {
 	app.Logger.Info("starting application..")
+
+	// start cron import manager
+	importManager := cron.NewImportManager(app.DB, app.Logger, "", "")
+	go importManager.StartImportManager()
+
+	select {}
 }
