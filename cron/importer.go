@@ -1,10 +1,11 @@
 package cron
 
 import (
+	"log/slog"
+
 	"github.com/JeffreyTheTukkr/candlelyzer.com/importers"
 	"github.com/go-co-op/gocron/v2"
 	"github.com/jackc/pgx/v5/pgxpool"
-	"log/slog"
 )
 
 // ImportManager required importer manager dependencies
