@@ -47,14 +47,14 @@ func (ci *CandlesImporter) RunCandlesImport() {
 		// fetch last candle close time
 		lastCloseTime, err := candleRepo.FindLastCloseTime(pair.Id)
 		if err != nil {
-			ci.logger.Error("failed to retrieve last close time model", "error", err)
+			ci.logger.Error("failed to retrieve last close time", "exchange", pair.Exchange, "pair", pair.Base+pair.Quote, "error", err)
 			continue
 		}
 
 		// retrieve candle data
 		candles, err := binanceProvider.FetchCandleData(pair.Base+pair.Quote, lastCloseTime)
 		if err != nil {
-			ci.logger.Error("failed to fetch last candle close_time", "error", err)
+			ci.logger.Error("failed to fetch last candle close_time", "exchange", pair.Exchange, "pair", pair.Base+pair.Quote, "error", err)
 			continue
 		}
 
@@ -73,7 +73,7 @@ func (ci *CandlesImporter) RunCandlesImport() {
 			})
 
 			if err != nil {
-				ci.logger.Error("failed to insert candle", "symbol", pair.Base+pair.Quote, "error", err)
+				ci.logger.Error("failed to insert candle", "exchange", pair.Exchange, "pair", pair.Base+pair.Quote, "error", err)
 			}
 		}
 	}
