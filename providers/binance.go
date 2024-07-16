@@ -29,14 +29,15 @@ func (br *BinanceRepo) ListAllPairs() ([]models.PairBase, error) {
 	exchange, err := br.client.NewExchangeInfoService().Do(context.Background())
 
 	// map data to standardized pair
-	var pairs []models.PairBase
-	for _, symbol := range exchange.Symbols {
-		return append(pairs, models.PairBase{
+	//var pairs []models.PairBase
+	pairs := make([]models.PairBase, len(exchange.Symbols))
+	for i, symbol := range exchange.Symbols {
+		pairs[i] = models.PairBase{
 			Base:     symbol.BaseAsset,
 			Quote:    symbol.QuoteAsset,
 			Exchange: models.Binance,
 			Status:   matchBinancePairStatus(symbol.Status),
-		}), nil
+		}
 	}
 
 	return pairs, err
