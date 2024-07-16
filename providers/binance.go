@@ -63,8 +63,8 @@ func (br *BinanceRepo) FetchCandleData(pair string, since time.Time) ([]models.C
 
 		// append data
 		candles[i] = models.CandleBase{
-			OpenTime:  time.Unix(candle.OpenTime, 0),
-			CloseTime: time.Unix(candle.CloseTime, 0),
+			OpenTime:  time.Unix(0, candle.OpenTime*int64(time.Millisecond)).UTC(),
+			CloseTime: time.Unix(0, candle.CloseTime*int64(time.Millisecond)).UTC(),
 			Open:      openF,
 			Close:     closeF,
 			High:      highF,
