@@ -53,15 +53,16 @@ func (br *BinanceRepo) FetchCandleData(pair string, since time.Time) ([]models.C
 	data, err := br.client.NewKlinesService().Symbol(pair).StartTime(since.UnixMilli()).Limit(1000).Interval("1m").Do(context.Background())
 
 	// map data to standardized candle
-	var candles []models.CandleBase
-	for _, candle := range data {
+	candles := make([]models.CandleBase, len(data))
+	for i, candle := range data {
 		openF, _ := strconv.ParseFloat(candle.Open, 64)
 		closeF, _ := strconv.ParseFloat(candle.Close, 64)
 		highF, _ := strconv.ParseFloat(candle.High, 64)
 		lowF, _ := strconv.ParseFloat(candle.Low, 64)
 		volumeF, _ := strconv.ParseFloat(candle.Volume, 64)
 
-		return append(candles, models.CandleBase{
+		// append data
+		candles[i] = models.CandleBase{
 			OpenTime:  time.Unix(candle.OpenTime, 0),
 			CloseTime: time.Unix(candle.CloseTime, 0),
 			Open:      openF,
@@ -70,7 +71,7 @@ func (br *BinanceRepo) FetchCandleData(pair string, since time.Time) ([]models.C
 			Low:       lowF,
 			Volume:    volumeF,
 			NoTrade:   uint64(candle.TradeNum),
-		}), nil
+		}
 	}
 
 	return candles, err
