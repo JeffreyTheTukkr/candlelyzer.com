@@ -45,10 +45,13 @@ func (ci *CandlesImporter) RunCandlesImport() {
 	// fetch and import candles for each pair
 	for _, pair := range pairs {
 		// fetch last candle close time
+		// set the lastCloseTime to new time.Time if none is found
 		lastCloseTime, err := candleRepo.FindLastCloseTime(pair.Id)
 		if err != nil {
-			ci.logger.Error("failed to retrieve last close time", "exchange", pair.Exchange, "pair", pair.Base+pair.Quote, "error", err)
-			continue
+			if err.Error() != "no rows in result set" {
+				ci.logger.Error("failed to retrieve last close time", "exchange", pair.Exchange, "pair", pair.Base+pair.Quote, "error", err)
+				continue
+			}
 		}
 
 		// retrieve candle data
