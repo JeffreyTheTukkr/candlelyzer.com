@@ -5,7 +5,6 @@ import (
 	"github.com/go-co-op/gocron/v2"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"log/slog"
-	"sync"
 )
 
 // ImportManager required importer manager dependencies
@@ -39,24 +38,20 @@ func (im *ImportManager) StartImportManager() {
 	candlesImporter := importers.NewCandlesImporter(im.db, im.logger, im.binanceApiKey, im.binanceSecret)
 
 	// add pair importer job
-	_, _ = cron.NewJob(gocron.CronJob("0 * * * * *", true), gocron.NewTask(func() {
+	pairJob, _ := cron.NewJob(gocron.CronJob("30 * */8 * * *", true), gocron.NewTask(func() {
 		im.logger.Info("running pairs importer...")
 		pairsImporter.RunPairsImport()
 	}))
 
 	// add candle importer job
-	_, _ = cron.NewJob(gocron.CronJob("0 * * * * *", true), gocron.NewTask(gocron.NewTask(func() {
+	candleJob, _ := cron.NewJob(gocron.CronJob("0 * * * * *", true), gocron.NewTask(func() {
 		im.logger.Info("running candle importer...")
 		candlesImporter.RunCandlesImport()
-	})))
+	}))
 
-	// create own wait group for cron manager
-	wg := &sync.WaitGroup{}
-	wg.Add(5)
-
-	// start and run all jobs on start
+	// start cron manager and run imports
 	cron.Start()
-
-	// await wait group
-	wg.Wait()
+	_ = pairJob.RunNow()
+	_ = candleJob.RunNow()
+	select {}
 }
