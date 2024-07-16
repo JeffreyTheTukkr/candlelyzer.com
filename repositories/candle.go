@@ -24,7 +24,7 @@ func NewCandleRepo(db *pgxpool.Pool) *CandleRepo {
 
 // InsertOne insert a single candle base model
 func (cr *CandleRepo) InsertOne(m models.CandleBase) error {
-	_, err := cr.db.Exec(context.Background(), "INSERT INTO candles (pair, open_time, close_time, open, close, high, low, volume, no_trades) "+
+	_, err := cr.db.Exec(context.Background(), "INSERT INTO candles (pair_id, open_time, close_time, open, close, high, low, volume, no_trades) "+
 		"VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) ON CONFLICT DO NOTHING;",
 		m.Pair, m.OpenTime, m.CloseTime, m.Open, m.Close, m.High, m.Low, m.Volume, m.NoTrade)
 
